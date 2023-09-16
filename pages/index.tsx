@@ -1,22 +1,22 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import { useState } from "react";
+import PostService from "../services/PostService";
+import PostType from "../types/PostType";
 
-const Home: NextPage = () => {
-  const [count, setCount] = useState(0);
+export async function getStaticProps() {
+  const staticPostList = await PostService.getList();
+  return {
+    props: {
+      staticPostList,
+    },
+  };
+}
+
+const Home: NextPage<{ staticPostList: PostType[] }> = ({ staticPostList }) => {
   return (
     <>
-      <div className="text-2xl">home</div>
-      <p className="">{count}</p>
-      <button
-        onClick={() => {
-          setCount((prevCount) => prevCount + 1);
-        }}
-      >
-        カウントアップ
-      </button>
+      {staticPostList.map((post) => {
+        return <p key={post.id}>{post.title}</p>;
+      })}
     </>
   );
 };
