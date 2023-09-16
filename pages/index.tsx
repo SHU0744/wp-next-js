@@ -8,8 +8,8 @@ const Home: NextPage = () => {
   const [count, setCount] = useState(0);
   return (
     <>
-      <div>home</div>
-      <p>{count}</p>
+      <div className="text-2xl">home</div>
+      <p className="">{count}</p>
       <button
         onClick={() => {
           setCount((prevCount) => prevCount + 1);
