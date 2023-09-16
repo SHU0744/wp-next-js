@@ -3,7 +3,7 @@
 import axios from "axios";
 
 const repository = axios.create({
-  baseURL: process.env.WP_ENDPOINT,
+  baseURL: process.env.NEXT_PUBLIC_WP_ENDPOINT,
   headers: {
     "Content-Type": "application/json",
   },
