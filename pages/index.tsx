@@ -4,6 +4,7 @@ import PostType from "../types/PostType";
 
 export async function getStaticProps() {
   const staticPostList = await PostService.getList();
+  // console.log("SSGです。");
   return {
     props: {
       staticPostList,
