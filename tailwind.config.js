@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      width: {
+        main: "clamp(0vw,1000px,90vw)",
+      },
       fontFamily: {
         body: ["Noto Sans JP", "sans-serif"],
       },
