@@ -3,6 +3,7 @@ import PostService from "../services/PostService";
 import PostType from "../types/PostType";
 import usePostListSwr from "../hooks/ser/usePostListSwr";
 import PostBox from "../components/molecules/PostBox";
+import Layout from "../components/templates/Layout";
 
 export async function getStaticProps() {
   const staticPostList = await PostService.getList();
@@ -19,15 +20,17 @@ const Home: NextPage<{ staticPostList: PostType[] }> = ({ staticPostList }) => {
   const postList = usePostListSwr(staticPostList);
   // console.log(postList);
   return (
-    <div className="flex w-main  mx-auto gap-4">
-      {postList!.map((post) => {
-        return (
-          <div key={post.id} className="w-1/3">
-            <PostBox post={post} />
-          </div>
-        );
-      })}
-    </div>
+    <Layout>
+      <div className="flex w-main  mx-auto gap-4">
+        {postList!.map((post) => {
+          return (
+            <div key={post.id} className="w-1/3">
+              <PostBox post={post} />
+            </div>
+          );
+        })}
+      </div>
+    </Layout>
   );
 };
 
