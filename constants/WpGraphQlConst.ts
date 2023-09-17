@@ -3,9 +3,24 @@ export class WpGraphQlPostConst {
   posts {
     edges {
       node {
-        title
-        content
+        categories {
+          edges {
+            node {
+              name
+              slug
+            }
+          }
+        }
+        date
+        excerpt
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
         id
+        slug
+        title
       }
     }
   }

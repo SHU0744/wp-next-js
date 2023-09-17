@@ -17,12 +17,30 @@ export async function getStaticProps() {
 
 const Home: NextPage<{ staticPostList: PostType[] }> = ({ staticPostList }) => {
   const postList = usePostListSwr(staticPostList);
+  // console.log(postList);
   return (
-    <>
+    <div className="flex">
       {postList!.map((post) => {
-        return <p key={post.id}>{post.title}</p>;
+        return (
+          <div key={post.id} className="w-1/3 p-4">
+            <article className="shadow-sm shadow-gray-100">
+              <div>
+                <img
+                  className="w-full h-56 object-cover"
+                  src={post.featuredImage.url}
+                />
+              </div>
+              <div className="py-4 px-5">
+                <span>{post.category.name}</span>
+                <h2 className="font-body">{post.title}</h2>
+                <p>{post.excerpt}</p>
+                <span> {post.date}</span>
+              </div>
+            </article>
+          </div>
+        );
       })}
-    </>
+    </div>
   );
 };
 
