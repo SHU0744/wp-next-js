@@ -25,7 +25,7 @@ export class WpGraphQlPostConst {
     }
   }
 }`;
-
+  // slugから記事単体を持ってくる
   static one = `query PostQuery($id: ID!) {
       post(id: $id, idType: SLUG) {
         categories {
@@ -48,7 +48,7 @@ export class WpGraphQlPostConst {
         title
       }
     }`;
-
+  // 全記事のslugを持ってくる
   static allSlugList = `query PostAllSlugListQuery {
   posts(first: 10000) {
     edges {
