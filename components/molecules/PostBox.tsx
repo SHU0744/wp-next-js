@@ -4,8 +4,9 @@ import CommonImage from "../atoms/image/CommonImage";
 import CategoryLabel from "../atoms/label/CategoryLabel";
 import ArticleHeading from "../atoms/text/ArticleHeading";
 import DateText from "../atoms/text/DateText";
+import PostOnListType from "../../types/PostOnListType";
 
-const PostBox = ({ post }: { post: PostType }) => {
+const PostBox = ({ post }: { post: PostOnListType }) => {
   return (
     <article className="shadow-sm shadow-gray-100">
       <div>
