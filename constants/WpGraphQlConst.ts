@@ -1,9 +1,6 @@
 export class WpGraphQlPostConst {
-  static list = `query PostListQuery {
-  posts {
-    edges {
-      node {
-        categories {
+  private static _ItemsOnList = `
+  categories {
           edges {
             node {
               name
@@ -21,14 +18,10 @@ export class WpGraphQlPostConst {
         id
         slug
         title
-      }
-    }
-  }
-}`;
-  // slugから記事単体を持ってくる
-  static one = `query PostQuery($id: ID!) {
-      post(id: $id, idType: SLUG) {
-        categories {
+  `;
+
+  private static _ItemOnOne = `
+  categories {
           edges {
             node {
               name
@@ -46,11 +39,48 @@ export class WpGraphQlPostConst {
         id
         slug
         title
+  `;
+
+  static list = `query PostListQuery {
+  posts {
+    edges {
+      node {
+        ${this._ItemsOnList}
+      }
+    }
+  }
+}`;
+
+  //カテゴリーIDからカテゴリー一覧を取得
+  static listByCategory = `query PostListByCategoryQuery($categoryId:Int) {
+  posts(where: {categoryId: $categoryId}) {
+    edges {
+      node {
+        ${this._ItemsOnList}
+      }
+    }
+  }
+}`;
+  // slugから記事単体を持ってくる
+  static one = `query PostQuery($id: ID!) {
+      post(id: $id, idType: SLUG) {
+        ${this._ItemOnOne}
       }
     }`;
   // 全記事のslugを持ってくる
   static allSlugList = `query PostAllSlugListQuery {
   posts(first: 10000) {
+    edges {
+      node {
+        slug
+      }
+    }
+  }
+}`;
+
+  // 前カテゴリースラッグ取得
+  static allCategorySlugList = `query PostCategorySlugListQuery {
+  categories {
     edges {
       node {
         slug

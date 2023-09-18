@@ -6,7 +6,7 @@ import Layout from "../components/templates/Layout";
 import PostOnListType from "../types/PostOnListType";
 
 export async function getStaticProps() {
-  const staticPostList = await PostService.getList();
+  const staticPostList = await PostService.getList({});
   // console.log("SSGです。");
   return {
     props: {
@@ -20,10 +20,10 @@ const Home: NextPage<{ staticPostList: PostOnListType[] }> = ({
   staticPostList,
 }) => {
   const postList = usePostListSwr(staticPostList);
-  // console.log(postList);
+
   return (
     <Layout>
-      <div className="flex w-main  mx-auto gap-4">
+      <div className="flex w-main  mx-auto gap-4 flex-wrap">
         {postList!.map((post) => {
           return (
             <div key={post.id} className="w-1/3">

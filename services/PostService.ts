@@ -3,9 +3,13 @@ import PostOnListType from "../types/PostOnListType";
 import PostType from "../types/PostType";
 
 class PostService {
-  static async getList(): Promise<PostOnListType[]> {
+  static async getList({
+    categoryId,
+  }: {
+    categoryId?: number;
+  }): Promise<PostOnListType[]> {
     try {
-      const res = await RepositoryFactory.post.getList();
+      const res = await RepositoryFactory.post.getList({ categoryId });
       return res.data.data.posts.edges.map((data: any) => {
         const post: PostOnListType = {
           id: data.node.id,
@@ -67,6 +71,24 @@ class PostService {
     try {
       const res = await RepositoryFactory.post.getAllSlugList();
       return res.data.data.posts.edges.map((data: any) => {
+        return { params: { slug: data.node.slug } };
+      });
+    } catch (error) {
+      return [];
+    }
+  }
+
+  // 全カテゴリースラッグ取得
+  static async getAllCategorySlugList(): Promise<
+    {
+      params: {
+        slug: string;
+      };
+    }[]
+  > {
+    try {
+      const res = await RepositoryFactory.post.getAllCategorySlugList();
+      return res.data.data.categories.edges.map((data: any) => {
         return { params: { slug: data.node.slug } };
       });
     } catch (error) {

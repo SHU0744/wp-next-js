@@ -3,7 +3,12 @@ import Repository from "./Repository";
 
 // 全記事取得
 class PostRepository {
-  static getList() {
+  static getList({ categoryId }: { categoryId?: number }) {
+    if (categoryId) {
+      return Repository(WpGraphQlPostConst.listByCategory, {
+        variables: { categoryId },
+      }).getWp();
+    }
     return Repository(WpGraphQlPostConst.list).getWp();
   }
 
@@ -15,6 +20,11 @@ class PostRepository {
   // 全記事のslugを取得
   static getAllSlugList() {
     return Repository(WpGraphQlPostConst.allSlugList).getWp();
+  }
+
+  // 全かてごりーslugを取得
+  static getAllCategorySlugList() {
+    return Repository(WpGraphQlPostConst.allCategorySlugList).getWp();
   }
 }
 
