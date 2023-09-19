@@ -95,6 +95,15 @@ class PostService {
       return [];
     }
   }
+  // カテゴリースラッグからカテゴリーIDを取得
+  static async getCategoryIdBySlug({
+    slug,
+  }: {
+    slug: string;
+  }): Promise<number> {
+    const res = await RepositoryFactory.post.getCategoryIdBySlug({ slug });
+    return res.data.data.category.categoryId;
+  }
 }
 
 export default PostService;

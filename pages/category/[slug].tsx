@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import PostBox from "../../components/molecules/PostBox";
 import Layout from "../../components/templates/Layout";
 import usePostListSwr from "../../hooks/swr/usePostListSwr";
@@ -20,9 +21,9 @@ export const getStaticProps = async ({
     slug: string;
   };
 }) => {
-    const slug = params.slug;
-    // const categoryId = hoge(slug);
-  const staticPostList = await PostService.getList({ categoryId: 2 });
+  const slug = params.slug;
+  const categoryId = await PostService.getCategoryIdBySlug({ slug });
+  const staticPostList = await PostService.getList({ categoryId });
   return {
     props: {
       staticPostList,

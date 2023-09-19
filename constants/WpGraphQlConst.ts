@@ -88,4 +88,11 @@ export class WpGraphQlPostConst {
     }
   }
 }`;
+
+  // カテゴリースラッグからカテゴリーIDを取得
+  static categoryIdBySlug = `query PostCategoryIdBySlugQuery($id: ID!) {
+  category(id: $id, idType: SLUG) {
+    categoryId
+  }
+}`;
 }
