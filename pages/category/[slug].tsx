@@ -26,18 +26,24 @@ export const getStaticProps = async ({
   const staticPostList = await PostService.getList({ categoryId });
   return {
     props: {
+      categoryId,
       staticPostList,
     },
     revalidate: 10,
   };
 };
 
-const PostListByCategory: NextPage<{ staticPostList: PostOnListType[] }> = ({
+const PostListByCategory: NextPage<{
+  categoryId: number;
+  staticPostList: PostOnListType[];
+}> = ({
+  categoryId,
   staticPostList,
 }: {
+  categoryId: number;
   staticPostList: any;
 }) => {
-  const postList = staticPostList;
+  const postList = usePostListSwr({ categoryId, staticPostList });
 
   return (
     <Layout>

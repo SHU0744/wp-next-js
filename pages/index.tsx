@@ -19,7 +19,7 @@ export async function getStaticProps() {
 const Home: NextPage<{ staticPostList: PostOnListType[] }> = ({
   staticPostList,
 }) => {
-  const postList = usePostListSwr(staticPostList);
+  const postList = usePostListSwr({ staticPostList });
 
   return (
     <Layout>

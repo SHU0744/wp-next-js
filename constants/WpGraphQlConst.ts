@@ -78,7 +78,7 @@ export class WpGraphQlPostConst {
   }
 }`;
 
-  // 前カテゴリースラッグ取得
+  // 全カテゴリースラッグ取得
   static allCategorySlugList = `query PostCategorySlugListQuery {
   categories {
     edges {
