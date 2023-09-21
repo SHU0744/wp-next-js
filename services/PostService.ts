@@ -4,12 +4,18 @@ import PostType from "../types/PostType";
 
 class PostService {
   static async getList({
+    page,
     categoryId,
   }: {
+    page?: number;
     categoryId?: number;
   }): Promise<PostOnListType[]> {
     try {
-      const res = await RepositoryFactory.post.getList({ categoryId });
+      const offsetPagination = { offset: 18, size: 9 };
+      const res = await RepositoryFactory.post.getList({
+        offsetPagination,
+        categoryId,
+      });
       return res.data.data.posts.edges.map((data: any) => {
         const post: PostOnListType = {
           id: data.node.id,
