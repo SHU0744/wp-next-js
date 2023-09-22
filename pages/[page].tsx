@@ -4,9 +4,32 @@ import usePostListSwr from "../hooks/swr/usePostListSwr";
 import PostBox from "../components/molecules/PostBox";
 import Layout from "../components/templates/Layout";
 import PostOnListType from "../types/PostOnListType";
+import PostConst from "../constants/PostConst";
 
-export async function getStaticProps() {
-  const staticPostList = await PostService.getList({ page: 1 });
+export const getStaticPaths = async () => {
+  const total = await PostService.getTotal();
+  const pageTotal = Math.ceil(total / PostConst.sizePerPage);
+  const pageList = [...Array(pageTotal)].map((_, i) => i + 1);
+
+  const paths = pageList.map((page: number) => {
+    return { params: { page: page.toString() } };
+  });
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};
+
+export async function getStaticProps({
+  params,
+}: {
+  params: {
+    page: string;
+  };
+}) {
+  const page = parseInt(params.page);
+  const staticPostList = await PostService.getList({ page });
   // console.log("SSGです。");
   return {
     props: {
@@ -19,7 +42,8 @@ export async function getStaticProps() {
 const Home: NextPage<{ staticPostList: PostOnListType[] }> = ({
   staticPostList,
 }) => {
-  const postList = usePostListSwr({ staticPostList });
+  //   const postList = usePostListSwr({ staticPostList });
+  const postList = staticPostList;
 
   return (
     <Layout>

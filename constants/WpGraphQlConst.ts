@@ -95,4 +95,15 @@ export class WpGraphQlPostConst {
     categoryId
   }
 }`;
+
+  // 記事の数を取得
+  static total = `query PostTotalQuery {
+  posts {
+    pageInfo {
+      offsetPagination {
+        total
+      }
+    }
+  }
+}`;
 }

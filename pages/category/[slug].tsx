@@ -23,7 +23,7 @@ export const getStaticProps = async ({
 }) => {
   const slug = params.slug;
   const categoryId = await PostService.getCategoryIdBySlug({ slug });
-  const staticPostList = await PostService.getList({ categoryId });
+  const staticPostList = await PostService.getList({ page: 1, categoryId });
   return {
     props: {
       categoryId,

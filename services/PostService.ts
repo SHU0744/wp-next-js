@@ -1,4 +1,6 @@
+import PostConst from "../constants/PostConst";
 import RepositoryFactory from "../repositories/RepositoryFactory";
+import OffsetPaginationType from "../types/OffsetPaginationType";
 import PostOnListType from "../types/PostOnListType";
 import PostType from "../types/PostType";
 
@@ -7,11 +9,11 @@ class PostService {
     page,
     categoryId,
   }: {
-    page?: number;
+    page: number;
     categoryId?: number;
   }): Promise<PostOnListType[]> {
     try {
-      const offsetPagination = { offset: 18, size: 9 };
+      const offsetPagination = this._makeOffestPaginationFromPage(page);
       const res = await RepositoryFactory.post.getList({
         offsetPagination,
         categoryId,
@@ -109,6 +111,21 @@ class PostService {
   }): Promise<number> {
     const res = await RepositoryFactory.post.getCategoryIdBySlug({ slug });
     return res.data.data.category.categoryId;
+  }
+
+  // 記事の数を取得
+  static async getTotal(): Promise<number> {
+    const res = await RepositoryFactory.post.getTotal();
+    return res.data.data.posts.pageInfo.offsetPagination.total;
+  }
+
+  private static _makeOffestPaginationFromPage(
+    page: number
+  ): OffsetPaginationType {
+    return {
+      offset: (page - 1) * PostConst.sizePerPage,
+      size: PostConst.sizePerPage,
+    };
   }
 }
 

@@ -14,10 +14,10 @@ const usePostListSwr = ({
   let key, fetcher;
   if (categoryId) {
     key = [WpGraphQlPostConst.listByCategory, categoryId];
-    fetcher = () => PostService.getList({ categoryId });
+    fetcher = () => PostService.getList({ page: 1, categoryId });
   } else {
     key = WpGraphQlPostConst.list;
-    fetcher = PostService.getList;
+    fetcher = () => PostService.getList({ page: 1 });
   }
   const { data: postList } = useSWR(
     key,

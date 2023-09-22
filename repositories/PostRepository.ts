@@ -42,6 +42,11 @@ class PostRepository {
       variables: { id: slug },
     }).getWp();
   }
+
+  // 記事の数を取得
+  static getTotal() {
+    return Repository(WpGraphQlPostConst.total).getWp();
+  }
 }
 
 export default PostRepository;
