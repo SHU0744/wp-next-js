@@ -5,6 +5,7 @@ import PostBox from "../components/molecules/PostBox";
 import Layout from "../components/templates/Layout";
 import PostOnListType from "../types/PostOnListType";
 import PostConst from "../constants/PostConst";
+import Pagenation from "../components/molecules/Pagenation";
 
 export const getStaticPaths = async () => {
   const paths = await PostService.getAllPageList();
@@ -54,8 +55,7 @@ const Home: NextPage<{
           );
         })}
       </div>
-      <p>{staticTotal}</p>
-      <p>{page}</p>
+      <Pagenation />
     </Layout>
   );
 };
