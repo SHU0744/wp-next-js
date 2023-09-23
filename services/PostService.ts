@@ -11,14 +11,14 @@ class PostService {
   }: {
     page: number;
     categoryId?: number;
-  }): Promise<PostOnListType[]> {
+  }): Promise<[PostOnListType[], number]> {
     try {
       const offsetPagination = this._makeOffestPaginationFromPage(page);
       const res = await RepositoryFactory.post.getList({
         offsetPagination,
         categoryId,
       });
-      return res.data.data.posts.edges.map((data: any) => {
+      const postList = res.data.data.posts.edges.map((data: any) => {
         const post: PostOnListType = {
           id: data.node.id,
           title: data.node.title,
@@ -33,11 +33,12 @@ class PostService {
             slug: data.node.categories.edges[0].node.slug,
           },
         };
-
         return post;
       });
+      const total = res.data.data.posts.pageInfo.offsetPagination.total;
+      return [postList, total];
     } catch (error) {
-      return [];
+      return [[], 0];
     }
   }
 
@@ -103,6 +104,22 @@ class PostService {
       return [];
     }
   }
+
+  static async getAllPageList(): Promise<
+    {
+      params: {
+        page: string;
+      };
+    }[]
+  > {
+    const total = await this.getTotal();
+    const pageTotal = Math.ceil(total / PostConst.sizePerPage);
+    const pageList = [...Array(pageTotal)].map((_, i) => i + 1);
+    return pageList.map((page: number) => {
+      return { params: { page: page.toString() } };
+    });
+  }
+
   // カテゴリースラッグからカテゴリーIDを取得
   static async getCategoryIdBySlug({
     slug,

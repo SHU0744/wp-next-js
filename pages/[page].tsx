@@ -7,13 +7,7 @@ import PostOnListType from "../types/PostOnListType";
 import PostConst from "../constants/PostConst";
 
 export const getStaticPaths = async () => {
-  const total = await PostService.getTotal();
-  const pageTotal = Math.ceil(total / PostConst.sizePerPage);
-  const pageList = [...Array(pageTotal)].map((_, i) => i + 1);
-
-  const paths = pageList.map((page: number) => {
-    return { params: { page: page.toString() } };
-  });
+  const paths = await PostService.getAllPageList();
 
   return {
     paths,
@@ -29,19 +23,23 @@ export async function getStaticProps({
   };
 }) {
   const page = parseInt(params.page);
-  const staticPostList = await PostService.getList({ page });
-  // console.log("SSGです。");
+  const [staticPostList, staticTotal] = await PostService.getList({ page });
+
   return {
     props: {
       staticPostList,
+      staticTotal,
+      page,
     },
     revalidate: 10,
   };
 }
 
-const Home: NextPage<{ staticPostList: PostOnListType[] }> = ({
-  staticPostList,
-}) => {
+const Home: NextPage<{
+  staticPostList: PostOnListType[];
+  staticTotal: number;
+  page: number;
+}> = ({ staticPostList, staticTotal, page }) => {
   //   const postList = usePostListSwr({ staticPostList });
   const postList = staticPostList;
 
@@ -56,6 +54,8 @@ const Home: NextPage<{ staticPostList: PostOnListType[] }> = ({
           );
         })}
       </div>
+      <p>{staticTotal}</p>
+      <p>{page}</p>
     </Layout>
   );
 };

@@ -48,6 +48,11 @@ export class WpGraphQlPostConst {
         ${this._ItemsOnList}
       }
     }
+    pageInfo {
+      offsetPagination {
+        total
+      }
+    }
   }
 }`;
 
