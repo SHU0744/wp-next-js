@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import PaginationConst from "../../constants/PaginationConst";
 const Pagenation = ({
   total,
   sizePerPage,
@@ -36,20 +37,20 @@ const Pagenation = ({
             </a>
             {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
 
-            {[...Array(7)].map((_, i) => {
+            {[...Array(PaginationConst.allBox)].map((_, i) => {
               let page;
               const a = i + 1;
               const b = currentPage + a - 2;
-              const c = totalPage - (7 - a);
-              if (totalPage <= 7) {
+              const c = totalPage - (PaginationConst.allBox - a);
+              if (totalPage <= PaginationConst.allBox) {
                 if (totalPage < a) return;
                 page = a;
               } else {
-                if (a <= 3) {
+                if (a <= PaginationConst.breakPoint - 1) {
                   page = Math.max(a, Math.min(b, c));
-                } else if (a == 4) {
+                } else if (a == PaginationConst.breakPoint) {
                   page = b < c ? "..." : c;
-                } else if (5 <= a) {
+                } else if (PaginationConst.breakPoint + 1 <= a) {
                   page = c;
                 }
               }

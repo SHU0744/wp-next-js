@@ -64,6 +64,11 @@ export class WpGraphQlPostConst {
         ${this._ItemsOnList}
       }
     }
+    pageInfo {
+      offsetPagination {
+        total
+      }
+    }
   }
 }`;
   // slugから記事単体を持ってくる

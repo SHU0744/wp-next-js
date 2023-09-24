@@ -23,7 +23,10 @@ export const getStaticProps = async ({
 }) => {
   const slug = params.slug;
   const categoryId = await PostService.getCategoryIdBySlug({ slug });
-  const staticPostList = await PostService.getList({ page: 1, categoryId });
+  const [staticPostList, _] = await PostService.getList({
+    page: 1,
+    categoryId,
+  });
   return {
     props: {
       categoryId,
@@ -43,7 +46,12 @@ const PostListByCategory: NextPage<{
   categoryId: number;
   staticPostList: any;
 }) => {
-  const postList = usePostListSwr({ categoryId, staticPostList });
+  const [postList, _] = usePostListSwr({
+    currentPage: 1,
+    categoryId,
+    staticPostList,
+    staticTotal: 9,
+  });
 
   return (
     <Layout>
