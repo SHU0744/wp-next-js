@@ -39,12 +39,15 @@ export async function getStaticProps({
 }
 
 const Home: NextPage<{
+  currentPage: number;
   staticPostList: PostOnListType[];
   staticTotal: number;
-  currentPage: number;
 }> = ({ staticPostList, staticTotal, currentPage }) => {
-  //   const postList = usePostListSwr({ staticPostList });
-  const postList = staticPostList;
+  const [postList, total] = usePostListSwr({
+    currentPage,
+    staticPostList,
+    staticTotal,
+  });
 
   return (
     <Layout>
@@ -58,7 +61,7 @@ const Home: NextPage<{
         })}
       </div>
       <Pagenation
-        total={staticTotal}
+        total={total}
         currentPage={currentPage}
         sizePerPage={PostConst.sizePerPage}
         path=""
