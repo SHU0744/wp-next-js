@@ -23,14 +23,16 @@ export async function getStaticProps({
     page: string;
   };
 }) {
-  const page = parseInt(params.page);
-  const [staticPostList, staticTotal] = await PostService.getList({ page });
+  const currentPage = parseInt(params.page);
+  const [staticPostList, staticTotal] = await PostService.getList({
+    page: currentPage,
+  });
 
   return {
     props: {
       staticPostList,
       staticTotal,
-      page,
+      currentPage,
     },
     revalidate: 10,
   };
@@ -39,8 +41,8 @@ export async function getStaticProps({
 const Home: NextPage<{
   staticPostList: PostOnListType[];
   staticTotal: number;
-  page: number;
-}> = ({ staticPostList, staticTotal, page }) => {
+  currentPage: number;
+}> = ({ staticPostList, staticTotal, currentPage }) => {
   //   const postList = usePostListSwr({ staticPostList });
   const postList = staticPostList;
 
@@ -55,7 +57,12 @@ const Home: NextPage<{
           );
         })}
       </div>
-      <Pagenation />
+      <Pagenation
+        total={staticTotal}
+        currentPage={currentPage}
+        sizePerPage={PostConst.sizePerPage}
+        path=""
+      />
     </Layout>
   );
 };
