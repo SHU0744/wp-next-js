@@ -31,7 +31,7 @@ export async function getStaticProps({
   //   console.log(params.param);
   const param = params.param;
   let currentPage = 1;
-  let categoryId;
+  let categoryId: number | undefined;
   if (param.length === 2 && param[0] === "page") {
     currentPage = parseInt(param[1]);
   } else if (
@@ -52,6 +52,7 @@ export async function getStaticProps({
       staticPostList,
       staticTotal,
       currentPage,
+      staticCategoryId: categoryId ?? null,
     },
     revalidate: 10,
   };
@@ -61,14 +62,15 @@ const Home: NextPage<{
   currentPage: number;
   staticPostList: PostOnListType[];
   staticTotal: number;
-}> = ({ staticPostList, staticTotal, currentPage }) => {
-  //   const [postList, total] = usePostListSwr({
-  //     currentPage,
-  //     staticPostList,
-  //     staticTotal,
-  //   });
-
-  const [postList, total] = [staticPostList, staticTotal];
+  staticCategoryId: number | null;
+}> = ({ staticPostList, staticTotal, currentPage, staticCategoryId }) => {
+  const categoryId = staticCategoryId ?? undefined;
+  const [postList, total] = usePostListSwr({
+    currentPage,
+    staticPostList,
+    staticTotal,
+    categoryId,
+  });
 
   return (
     <Layout>
