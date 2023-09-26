@@ -87,6 +87,32 @@ class PostService {
     }
   }
 
+  static async getAllPageAndCategoryList() {
+    const total = await this.getTotal();
+    const pageTotal = Math.ceil(total / PostConst.sizePerPage);
+    const pageList = [...Array(pageTotal)].map((_, i) => i + 1);
+    let allPageAndCategoryList = pageList.map((page: number) => {
+      return { params: { param: ["page", page.toString()] } };
+    });
+
+    const res = await RepositoryFactory.post.getAllCategorySlugList();
+    res.data.data.categories.edges.forEach((data: any) => {
+      const categorySlug = data.node.slug;
+      const total = data.node.posts.pageInfo.offsetPagination.total;
+      const pageTotal = Math.ceil(total / PostConst.sizePerPage);
+      const pageList = [...Array(pageTotal)].map((_, i) => i + 1);
+      pageList.forEach((page: number) => {
+        allPageAndCategoryList.push({
+          params: {
+            param: ["category", categorySlug, "page", page.toString()],
+          },
+        });
+      });
+    });
+
+    return allPageAndCategoryList;
+  }
+
   // 全カテゴリースラッグ取得
   static async getAllCategorySlugList(): Promise<
     {

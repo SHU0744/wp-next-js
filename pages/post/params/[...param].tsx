@@ -8,15 +8,10 @@ import PostConst from "../../../constants/PostConst";
 import Pagenation from "../../../components/molecules/Pagenation";
 
 export const getStaticPaths = async () => {
-  //   const paths = await PostService.getAllPageList();
+  const paths = await PostService.getAllPageAndCategoryList();
 
   return {
-    paths: [
-      { params: { param: ["page", "1"] } },
-      { params: { param: ["page", "2"] } },
-      { params: { param: ["category", "category1", "page", "1"] } },
-      { params: { param: ["category", "category2", "page", "2"] } },
-    ],
+    paths,
     fallback: "blocking",
   };
 };
