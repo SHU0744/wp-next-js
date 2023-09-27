@@ -89,8 +89,7 @@ class PostService {
 
   static async getAllPageAndCategoryList() {
     const total = await this.getTotal();
-    const pageTotal = Math.ceil(total / PostConst.sizePerPage);
-    const pageList = [...Array(pageTotal)].map((_, i) => i + 1);
+    const pageList = this._makePageList(total);
     let allPageAndCategoryList = pageList.map((page: number) => {
       return { params: { param: ["page", page.toString()] } };
     });
@@ -99,8 +98,7 @@ class PostService {
     res.data.data.categories.edges.forEach((data: any) => {
       const categorySlug = data.node.slug;
       const total = data.node.posts.pageInfo.offsetPagination.total;
-      const pageTotal = Math.ceil(total / PostConst.sizePerPage);
-      const pageList = [...Array(pageTotal)].map((_, i) => i + 1);
+      const pageList = this._makePageList(total);
       pageList.forEach((page: number) => {
         allPageAndCategoryList.push({
           params: {
@@ -169,6 +167,11 @@ class PostService {
       offset: (page - 1) * PostConst.sizePerPage,
       size: PostConst.sizePerPage,
     };
+  }
+
+  private static _makePageList(total: number) {
+    const pageTotal = Math.ceil(total / PostConst.sizePerPage);
+    return [...Array(pageTotal)].map((_, i) => i + 1);
   }
 }
 

@@ -27,6 +27,7 @@ export async function getStaticProps({
   const param = params.param;
   let currentPage = 1;
   let categoryId: number | undefined;
+  let categorySlug: string | undefined;
   if (param.length === 2 && param[0] === "page") {
     currentPage = parseInt(param[1]);
   } else if (
@@ -34,7 +35,8 @@ export async function getStaticProps({
     param[0] === "category" &&
     param[2] === "page"
   ) {
-    categoryId = await PostService.getCategoryIdBySlug({ slug: param[1] });
+    categorySlug = param[1];
+    categoryId = await PostService.getCategoryIdBySlug({ slug: categorySlug });
     currentPage = parseInt(param[3]);
   }
   const [staticPostList, staticTotal] = await PostService.getList({
@@ -48,6 +50,7 @@ export async function getStaticProps({
       staticTotal,
       currentPage,
       staticCategoryId: categoryId ?? null,
+      staticCategorySlug: categorySlug ?? null,
     },
     revalidate: 10,
   };
@@ -58,8 +61,16 @@ const Home: NextPage<{
   staticPostList: PostOnListType[];
   staticTotal: number;
   staticCategoryId: number | null;
-}> = ({ staticPostList, staticTotal, currentPage, staticCategoryId }) => {
+  staticCategorySlug: string | null;
+}> = ({
+  staticPostList,
+  staticTotal,
+  currentPage,
+  staticCategoryId,
+  staticCategorySlug,
+}) => {
   const categoryId = staticCategoryId ?? undefined;
+  const categorySlug = staticCategorySlug ?? undefined;
   const [postList, total] = usePostListSwr({
     currentPage,
     staticPostList,
@@ -82,7 +93,7 @@ const Home: NextPage<{
         total={total}
         currentPage={currentPage}
         sizePerPage={PostConst.sizePerPage}
-        path=""
+        path={`${categorySlug ? `/category/${categorySlug}` : ""}/page`}
       />
     </Layout>
   );
